@@ -82,7 +82,7 @@ $('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value
 //alert($(this).find('a:first').attr('href'));
     var pid = $(this).find('a:first').attr('href');
     var image_src = $(this).closest('.media').find('img:first').attr('src');
-    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>schedule</a>"");
+    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>prices</a>"");
 }); ";
             browser.Document.InvokeScript("eval", new object[] { script });
         }
