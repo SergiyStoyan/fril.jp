@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Script.Serialization;
 
-namespace Cliver.Custom
+namespace Cliver.fril.jp
 {
     public class Settings
     {

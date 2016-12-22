@@ -13,15 +13,12 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class BrowserForm : Form//BaseForm//
+    public partial class Browser2Form : Form//BaseForm//
     {
-        public BrowserForm()
+        public Browser2Form()
         {
             InitializeComponent();
-
-            Text = "Product Collection";
-            this.Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetEntryAssembly().Location);
-
+            
             //CefSettings settings = new CefSettings();
             //// Initialize cef with the provided settings
             //Cef.Initialize(settings);
@@ -45,6 +42,8 @@ namespace Cliver.fril.jp
             browser.Navigated += Browser_Navigated;
             browser.ProgressChanged += Browser_ProgressChanged;
             browser.Navigate(Url);
+
+            this.Visible = false;
         }
 
         const string Url = "https://fril.jp/sell";

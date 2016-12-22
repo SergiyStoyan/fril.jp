@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Cliver;
 
-namespace Cliver.Custom
+namespace Cliver.fril.jp
 {
     public partial class ProductForm : BaseForm//Form//
     {
@@ -25,15 +26,22 @@ namespace Cliver.Custom
             //Url = url;
             image.ImageLocation = image_url;
             //link.Links[0].
-            Settings.Product p;
-            if (Settings.Products.Ids2Products.TryGetValue(id, out p))
+
+            lock (Settings.Products)
             {
-                foreach (int d in p.Days)
-                    days.SelectedIndex = d;
-                foreach (Settings.PriceChange pc in p.PriceChanges)
-                    prices.Items.Add(new PriceItem(pc.Time, pc.Price));
+                Settings.Product p;
+                if (Settings.Products.Ids2Products.TryGetValue(id, out p))
+                {
+                    foreach (int d in p.Days)
+                        days.SelectedIndex = d;
+                    foreach (Settings.PriceChange pc in p.PriceChanges)
+                        prices.Items.Add(new PriceItem(pc.Time, pc.Price));
+                }
             }
         }
+
+        public delegate void OnChange();
+        public static event OnChange Change = null;
 
         readonly string Id;
         //readonly string Url;
@@ -121,15 +129,22 @@ namespace Cliver.Custom
                 p.Id = Id;
                 p.PriceChanges = pcs;
                 //p.Url = Url;
-                Settings.Products.Ids2Products[p.Id] = p;
+                lock (Settings.Products)
+                {
+                    Settings.Products.Ids2Products[p.Id] = p;
+                }
             }
             catch (Exception ex)
             {
                 Message.Error(ex.Message);
                 return;
             }
-            Settings.Products.Save();
+            lock (Settings.Products)
+            {
+                Settings.Products.Save();
+            }
             Close();
+            Change?.Invoke();
         }
 
         private void bCancel_Click(object sender, EventArgs e)

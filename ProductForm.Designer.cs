@@ -1,4 +1,4 @@
-﻿namespace Cliver.Custom
+﻿namespace Cliver.fril.jp
 {
     partial class ProductForm
     {

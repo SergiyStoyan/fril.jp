@@ -10,7 +10,7 @@
     <ProjectGuid>{99BD0A06-0D5E-4EC0-BFE2-B88BEEBB9568}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cliver.Custom</RootNamespace>
+    <RootNamespace>Cliver.fril.jp</RootNamespace>
     <AssemblyName>fril.jp</AssemblyName>
     <StartupObject>
     </StartupObject>
@@ -118,13 +118,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs" />
+    <Compile Include="Browser2Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browser2Form.Designer.cs">
+      <DependentUpon>Browser2Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="BrowserForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BrowserForm.Designer.cs">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CliverBotCustomization.cs" />
+    <Compile Include="Service.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="ProductForm.cs">
       <SubType>Form</SubType>
@@ -134,6 +145,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\Products.cs" />
+    <Compile Include="SysTrayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SysTrayForm.designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
@@ -162,25 +177,27 @@
     <Content Include="computers308.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CLIVER\CliverBot\CliverBot.csproj">
-      <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
-      <Name>CliverBot</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CLIVER\CliverBot\CliverRoutines\CliverRoutines.csproj">
       <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
       <Name>CliverRoutines</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\CLIVER\CliverBot\CliverWebRoutines\CliverWebRoutines.csproj">
-      <Project>{114b1616-75e2-40d6-8e43-fbf2f6ee9390}</Project>
-      <Name>CliverWebRoutines</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browser2Form.resx">
+      <DependentUpon>Browser2Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProductForm.resx">
       <DependentUpon>ProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SysTrayForm.resx">
+      <DependentUpon>SysTrayForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

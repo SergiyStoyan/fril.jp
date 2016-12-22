@@ -1,6 +1,6 @@
 ﻿namespace Cliver.fril.jp
 {
-    partial class BrowserForm
+    partial class Browser2Form
     {
         /// <summary>
         /// Required designer variable.
