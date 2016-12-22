@@ -27,7 +27,7 @@ namespace Cliver.fril.jp
             image.ImageLocation = image_url;
             //link.Links[0].
 
-            lock (Settings.Products)
+            lock (Settings.Products.Ids2Products)
             {
                 Settings.Product p;
                 if (Settings.Products.Ids2Products.TryGetValue(id, out p))
@@ -129,7 +129,7 @@ namespace Cliver.fril.jp
                 p.Id = Id;
                 p.PriceChanges = pcs;
                 //p.Url = Url;
-                lock (Settings.Products)
+                lock (Settings.Products.Ids2Products)
                 {
                     Settings.Products.Ids2Products[p.Id] = p;
                 }

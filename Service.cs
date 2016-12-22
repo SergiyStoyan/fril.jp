@@ -60,25 +60,30 @@ namespace Cliver.fril.jp
 
         static void run()
         {
-            DateTime since_time = DateTime.Now;
             while (true)
             {
-                foreach (string pid in Settings.Products.Ids2Products.Keys)
+                lock (pids2LastPrice)
                 {
-                    Settings.PriceChange pc = Settings.Products.Ids2Products[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
+                    lock (Settings.Products.Ids2Products)
+                    {
+                        foreach (string pid in Settings.Products.Ids2Products.Keys)
+                        {
+                            Settings.PriceChange pc = Settings.Products.Ids2Products[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
 
-                    LastPrice lp;
-                    if (!pids2LastPrice.TryGetValue(pid, out lp))
-                    {
-                        lp = new LastPrice { Price = pc.Price, ProductId = pid, Synchronized = false };
-                        pids2LastPrice[pid] = lp;
-                    }
-                    else
-                    {
-                        if (lp.Price == pc.Price)
-                            continue;
-                        lp.Price = pc.Price;
-                        lp.Synchronized = true;
+                            LastPrice lp;
+                            if (!pids2LastPrice.TryGetValue(pid, out lp))
+                            {
+                                lp = new LastPrice { Price = pc.Price, ProductId = pid, Synchronized = false };
+                                pids2LastPrice[pid] = lp;
+                            }
+                            else
+                            {
+                                if (lp.Price == pc.Price)
+                                    continue;
+                                lp.Price = pc.Price;
+                                lp.Synchronized = true;
+                            }
+                        }
                     }
                 }
                 Thread.Sleep(1000);
@@ -90,7 +95,11 @@ namespace Cliver.fril.jp
         {
             while (true)
             {
-                LastPrice lp = pids2LastPrice.Values.Where(x => !x.Synchronized).FirstOrDefault();
+                LastPrice lp;
+                lock (pids2LastPrice)
+                {
+                    lp = pids2LastPrice.Values.Where(x => !x.Synchronized).FirstOrDefault();
+                }
                 if (lp == null)
                 {
                     Thread.Sleep(1000);
@@ -105,6 +114,7 @@ namespace Cliver.fril.jp
         {
             //bro
             //sell_price
+
         }
     }
 }
