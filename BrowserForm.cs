@@ -12,11 +12,14 @@ using CefSharp.WinForms;
 
 namespace Cliver.Custom
 {
-    public partial class BrowserForm : Form
+    public partial class BrowserForm : Form//BaseForm//
     {
         public BrowserForm()
         {
             InitializeComponent();
+
+            Text = "Product Collection";
+            this.Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetEntryAssembly().Location);
 
             //CefSettings settings = new CefSettings();
             //// Initialize cef with the provided settings
@@ -40,17 +43,21 @@ namespace Cliver.Custom
             browser.DocumentCompleted += Browser_DocumentCompleted;
             browser.Navigated += Browser_Navigated;
             browser.ProgressChanged += Browser_ProgressChanged;
-            browser.Navigate("https://fril.jp/sell?is_new=0");
+            browser.Navigate(Url);
         }
+
+        const string Url = "https://fril.jp/sell";
 
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
-            if (browser.ReadyState == WebBrowserReadyState.Loaded)
-            {
-                HtmlElement s = browser.Document.CreateElement("script");
-                s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
-                browser.Document.Body.AppendChild(s);
-            }
+            if (browser.Url == null || !browser.Url.AbsoluteUri.Contains(Url))
+                return;
+            //if (browser.ReadyState == WebBrowserReadyState.Interactive)
+            //{
+            //    HtmlElement s = browser.Document.CreateElement("script");
+            //    s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
+            //    browser.Document.Body.AppendChild(s);
+            //}
             if (browser.ReadyState == WebBrowserReadyState.Complete)
             {
                 add_buttons();
@@ -74,15 +81,16 @@ $('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value
     if($(this).find('._added').length > 0) return;
 //alert($(this).find('a:first').attr('href'));
     var pid = $(this).find('a:first').attr('href');
-    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\""); ' href='#'>schedule</a>"");
+    var image_src = $(this).closest('.media').find('img:first').attr('src');
+    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>schedule</a>"");
 }); ";
             browser.Document.InvokeScript("eval", new object[] { script });
         }
 
-        public void EditProduct(string id)
+        public void EditProduct(string id, string image_src)
         {
             id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
-            ProductForm pf = new ProductForm(id);
+            ProductForm pf = new ProductForm(id, image_src);
             pf.ShowDialog();
         }
     }

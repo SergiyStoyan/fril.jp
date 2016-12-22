@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Cliver.Custom
 {
-    public partial class ProductForm : Form
+    public partial class ProductForm : BaseForm//Form//
     {
-        public ProductForm(string id)
+        public ProductForm(string id, string image_url)
         {
             InitializeComponent();
 
@@ -23,6 +23,8 @@ namespace Cliver.Custom
 
             Id = id;
             //Url = url;
+            image.ImageLocation = image_url;
+            //link.Links[0].
             Settings.Product p;
             if (Settings.Products.Ids2Products.TryGetValue(id, out p))
             {
@@ -57,7 +59,7 @@ namespace Cliver.Custom
                         if (pi.Price == price_item.Price)
                             prices.Items.RemoveAt(i);
                         if (i > 0 && ((PriceItem)prices.Items[i - 1]).Price == price_item.Price)
-                            return;
+                            throw new Exception("Price is the same.");
                         prices.Items.Insert(i, price_item);
                         return;
                     }
@@ -68,7 +70,7 @@ namespace Cliver.Custom
                     }
                 }
                 if (prices.Items.Count > 0 && ((PriceItem)prices.Items[prices.Items.Count - 1]).Price == price_item.Price)
-                    return;
+                    throw new Exception("Price is the same.");
                 prices.Items.Add(price_item);
             }
             catch (Exception ex)
@@ -85,7 +87,7 @@ namespace Cliver.Custom
 
             public PriceItem(TimeSpan time, float price)
             {
-                Text = price.ToString() + " at " + time.ToString(@"hh\:mm");
+                Text = price.ToString() + " at " + time.ToString(@"hh\:mm\:ss");
                 Price = price;
                 Time = time;
             }
@@ -93,8 +95,12 @@ namespace Cliver.Custom
 
         private void bRemove_Click(object sender, EventArgs e)
         {
-            if (prices.SelectedIndex >= 0)
-                prices.Items.RemoveAt(prices.SelectedIndex);
+            if (prices.SelectedIndex < 0)
+                return;
+            PriceItem pi = (PriceItem)prices.SelectedItem;
+            price.Text = pi.Price.ToString();
+            time.Value = new DateTime(2000, 1, 1, pi.Time.Hours, pi.Time.Minutes, pi.Time.Seconds);
+            prices.Items.RemoveAt(prices.SelectedIndex);
         }
 
         private void bOK_Click(object sender, EventArgs e)
