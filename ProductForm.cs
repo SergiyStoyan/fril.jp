@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class ProductForm : BaseForm//Form//
+    public partial class ProductForm : Form//BaseForm//
     {
         public ProductForm(string id, string image_url)
         {

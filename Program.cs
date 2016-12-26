@@ -15,9 +15,7 @@ using System.IO;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Data;
 using System.Web.Script.Serialization;
-using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Net.Mail;
 using Cliver;
@@ -47,11 +45,11 @@ namespace Cliver.fril.jp
         {
             try
             {
-                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
-
                 Log.Initialize(Log.Mode.ONLY_LOG, null, true, 5);
                 Cliver.Config.Initialize(new string[] { "Products"/*, "Engine", "Log"*/ });
                 Cliver.Config.Reload();
+
+                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
 
                 Service.Running = true;
 

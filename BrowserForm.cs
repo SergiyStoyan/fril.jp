@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CefSharp;
-using CefSharp.WinForms;
 using Cliver;
 
 namespace Cliver.fril.jp
@@ -45,6 +42,8 @@ namespace Cliver.fril.jp
             browser.Navigated += Browser_Navigated;
             browser.ProgressChanged += Browser_ProgressChanged;
             browser.Navigate(Url);
+
+
         }
 
         const string Url = "https://fril.jp/sell";
@@ -53,15 +52,17 @@ namespace Cliver.fril.jp
         {
             if (browser.Url == null || !browser.Url.AbsoluteUri.Contains(Url))
                 return;
-            //if (browser.ReadyState == WebBrowserReadyState.Interactive)
-            //{
-            //    HtmlElement s = browser.Document.CreateElement("script");
-            //    s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
-            //    browser.Document.Body.AppendChild(s);
-            //}
-            if (browser.ReadyState == WebBrowserReadyState.Complete)
+            switch (browser.ReadyState)
             {
-                add_buttons();
+                case WebBrowserReadyState.Interactive:
+                    //HtmlElement s = browser.Document.CreateElement("script");
+                    //s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
+                    //browser.Document.Body.AppendChild(s);
+                    //add_buttons();
+                    break;
+                case WebBrowserReadyState.Complete:
+                    add_buttons();
+                    break;
             }
         }
 
@@ -71,21 +72,36 @@ namespace Cliver.fril.jp
 
         private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            add_buttons();
+            //add_buttons();
         }
 
         private void add_buttons()
         {
             string script = @"
+var done = false;
 $('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value) {
+    done = true;
 //alert($(this).find('._added').length);
     if($(this).find('._added').length > 0) return;
 //alert($(this).find('a:first').attr('href'));
     var pid = $(this).find('a:first').attr('href');
     var image_src = $(this).closest('.media').find('img:first').attr('src');
     $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>prices</a>"");
-}); ";
-            browser.Document.InvokeScript("eval", new object[] { script });
+});
+return done;
+";
+            for (int i = 0; i < 5; i++)
+            {
+                if ((bool)PerformScript(script))
+                    return;
+                SleepRoutines.Wait(300);
+            }
+        }
+
+        private object PerformScript(string script)
+        {
+            script = @"(function() {" + script + @"}())";
+            return browser.Document.InvokeScript("eval", new object[] { script });
         }
 
         public void EditProduct(string id, string image_src)

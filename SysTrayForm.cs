@@ -10,7 +10,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -19,7 +18,7 @@ using System.Diagnostics;
 
 namespace Cliver.fril.jp
 {
-    public partial class SysTray : BaseForm//Form //
+    public partial class SysTray : Form //BaseForm//
     {
         SysTray()
         {
@@ -83,6 +82,10 @@ private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         private void workDirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(Log.WorkDir);
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
         }
     }
 }

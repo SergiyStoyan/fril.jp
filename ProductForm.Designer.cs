@@ -47,7 +47,7 @@
             // time
             // 
             this.time.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.time.Location = new System.Drawing.Point(254, 60);
+            this.time.Location = new System.Drawing.Point(254, 55);
             this.time.Name = "time";
             this.time.ShowUpDown = true;
             this.time.Size = new System.Drawing.Size(75, 20);
@@ -55,18 +55,18 @@
             // 
             // bAdd
             // 
-            this.bAdd.Location = new System.Drawing.Point(334, 87);
+            this.bAdd.Location = new System.Drawing.Point(335, 89);
             this.bAdd.Name = "bAdd";
             this.bAdd.Size = new System.Drawing.Size(30, 23);
             this.bAdd.TabIndex = 1;
-            this.bAdd.Text = "<";
+            this.bAdd.Text = ">>";
             this.bAdd.UseVisualStyleBackColor = true;
             this.bAdd.Click += new System.EventHandler(this.bAdd_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(250, 43);
+            this.label1.Location = new System.Drawing.Point(250, 38);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             // price
             // 
-            this.price.Location = new System.Drawing.Point(254, 104);
+            this.price.Location = new System.Drawing.Point(254, 99);
             this.price.Name = "price";
             this.price.Size = new System.Drawing.Size(75, 20);
             this.price.TabIndex = 3;
@@ -82,7 +82,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(253, 87);
+            this.label2.Location = new System.Drawing.Point(253, 82);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 4;
@@ -99,11 +99,11 @@
             // 
             // bRemove
             // 
-            this.bRemove.Location = new System.Drawing.Point(334, 61);
+            this.bRemove.Location = new System.Drawing.Point(335, 60);
             this.bRemove.Name = "bRemove";
             this.bRemove.Size = new System.Drawing.Size(30, 23);
             this.bRemove.TabIndex = 6;
-            this.bRemove.Text = ">";
+            this.bRemove.Text = "<<";
             this.bRemove.UseVisualStyleBackColor = true;
             this.bRemove.Click += new System.EventHandler(this.bRemove_Click);
             // 
@@ -159,9 +159,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(367, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 13);
+            this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 11;
-            this.label4.Text = "Prices:";
+            this.label4.Text = "Prices && Times:";
             // 
             // image
             // 
