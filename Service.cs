@@ -144,14 +144,14 @@ namespace Cliver.fril.jp
                     switch (set_price(lp.Price, lp.ProductId))
                     {
                         case SiteProduct.ERROR:
-                            Log.Warning("Price was not set for product " + lp.ProductId + ". Will retry in " + AttemptDelayInMins);
+                            Log.Main.Warning("Price was not set for product " + lp.ProductId + ". Will retry in " + AttemptDelayInMins + " minutes.");
                             lock (pids2LastPrice)
                             {
                                 lp.AttemptTime = DateTime.Now.AddMinutes(AttemptDelayInMins);
                             }
                             break;
                         case SiteProduct.PRODUCT_ABSENT:
-                            Log.Warning("Product " + lp.ProductId + " is absent on site.");
+                            Log.Main.Warning("Product " + lp.ProductId + " is absent on site.");
                             lock (Settings.Products.Ids2Products)
                             {
                                 Settings.Products.Ids2Products.Remove(lp.ProductId);
@@ -164,7 +164,7 @@ namespace Cliver.fril.jp
                             break;
                         case SiteProduct.SYNCHRONIZED:
                             lp.Synchronized = true;
-                            Log.Main.Inform("Price " + lp.Price + " set to product: " + lp.ProductId);
+                            Log.Main.Inform("Product: " + lp.ProductId + " set price: " + lp.Price);
                             break;
                         default:
                             throw new Exception("No such option exists");
@@ -176,7 +176,7 @@ namespace Cliver.fril.jp
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Main.Error(e);
             }
         }
         const int AttemptDelayInMins = 10;
@@ -199,7 +199,7 @@ namespace Cliver.fril.jp
                     return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, pid, RegexOptions.IgnoreCase);
                 }, 30000))
                 {
-                    Log.Error("Could not Navigate");
+                    Log.Main.Error("Could not Navigate");
                     return SiteProduct.ERROR;
                 }
 
@@ -217,8 +217,8 @@ namespace Cliver.fril.jp
                 he = get_he("confirm");
                 if (he == null)
                     return SiteProduct.ERROR;
-                he.RaiseEvent("onclick");
-                he.InvokeMember("Click");
+               // he.RaiseEvent("onclick");
+                he.InvokeMember("click");
                 if (!SleepRoutines.WaitForCondition(() =>
                 {
                     var e = bf.Browser.Document.GetElementById("confirm-content");
@@ -230,7 +230,7 @@ namespace Cliver.fril.jp
 
                 }, 30000))
                 {
-                    Log.Error("Could not confirm");
+                    Log.Main.Error("Could not confirm");
                     return SiteProduct.ERROR;
                 }
 
@@ -239,21 +239,21 @@ namespace Cliver.fril.jp
                     return SiteProduct.ERROR;
                 if (!string.IsNullOrWhiteSpace(he.InnerHtml))
                 {
-                    Log.Error("Validation error: " + he.InnerHtml);
+                    Log.Main.Error("Validation error: " + he.InnerHtml);
                     return SiteProduct.ERROR;
                 }
 
                 he = get_he("submit");
                 if (he == null)
                     return SiteProduct.ERROR;
-                he.RaiseEvent("onclick");
-                he.InvokeMember("Click");
+               // he.RaiseEvent("onclick");
+                he.InvokeMember("click");
                 if (!SleepRoutines.WaitForCondition(() =>
                 {
                     return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, @"fril\.jp/sell", RegexOptions.IgnoreCase);
                 }, 30000))
                 {
-                    Log.Error("Could not save price");
+                    Log.Main.Error("Could not save price");
                     return SiteProduct.ERROR;
                 }
 
@@ -271,7 +271,7 @@ namespace Cliver.fril.jp
                 return bf.Browser.Document.GetElementById(id);
             }, 30000);
             if (he == null)
-                Log.Error("Could not get HtmlElement: " + id);
+                Log.Main.Error("Could not get HtmlElement: " + id);
             return he;
         }
     }

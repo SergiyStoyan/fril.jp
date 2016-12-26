@@ -19,7 +19,7 @@ using System.Diagnostics;
 
 namespace Cliver.fril.jp
 {
-    public partial class SysTray : Form //BaseForm//
+    public partial class SysTray : BaseForm//Form //
     {
         SysTray()
         {
@@ -44,9 +44,18 @@ namespace Cliver.fril.jp
         {
             BrowserForm bf = new BrowserForm();
             bf.ShowDialog();
+    //        if(bf !=null)
+    //        {
+    //            bf.Activate();
+    //            return;
+    //        }
+    //bf = new BrowserForm();
+    //bf.ShowDialog();
+    //        bf = null;
         }
+//BrowserForm bf = null;
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm.Open();
         }

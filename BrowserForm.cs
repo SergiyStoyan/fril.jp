@@ -13,7 +13,7 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class BrowserForm : BaseForm//Form//
+    public partial class BrowserForm : Form//BaseForm//
     {
         public BrowserForm()
         {

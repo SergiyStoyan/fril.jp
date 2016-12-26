@@ -47,7 +47,7 @@
             // time
             // 
             this.time.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.time.Location = new System.Drawing.Point(415, 60);
+            this.time.Location = new System.Drawing.Point(254, 60);
             this.time.Name = "time";
             this.time.ShowUpDown = true;
             this.time.Size = new System.Drawing.Size(75, 20);
@@ -55,7 +55,7 @@
             // 
             // bAdd
             // 
-            this.bAdd.Location = new System.Drawing.Point(381, 87);
+            this.bAdd.Location = new System.Drawing.Point(334, 87);
             this.bAdd.Name = "bAdd";
             this.bAdd.Size = new System.Drawing.Size(30, 23);
             this.bAdd.TabIndex = 1;
@@ -66,7 +66,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(411, 43);
+            this.label1.Location = new System.Drawing.Point(250, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 2;
@@ -74,7 +74,7 @@
             // 
             // price
             // 
-            this.price.Location = new System.Drawing.Point(415, 104);
+            this.price.Location = new System.Drawing.Point(254, 104);
             this.price.Name = "price";
             this.price.Size = new System.Drawing.Size(75, 20);
             this.price.TabIndex = 3;
@@ -82,7 +82,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(414, 87);
+            this.label2.Location = new System.Drawing.Point(253, 87);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 4;
@@ -92,14 +92,14 @@
             // 
             this.prices.FormattingEnabled = true;
             this.prices.IntegralHeight = false;
-            this.prices.Location = new System.Drawing.Point(255, 33);
+            this.prices.Location = new System.Drawing.Point(370, 33);
             this.prices.Name = "prices";
             this.prices.Size = new System.Drawing.Size(120, 101);
             this.prices.TabIndex = 5;
             // 
             // bRemove
             // 
-            this.bRemove.Location = new System.Drawing.Point(381, 61);
+            this.bRemove.Location = new System.Drawing.Point(334, 61);
             this.bRemove.Name = "bRemove";
             this.bRemove.Size = new System.Drawing.Size(30, 23);
             this.bRemove.TabIndex = 6;
@@ -119,7 +119,7 @@
             "Thursday",
             "Friday",
             "Saturday"});
-            this.days.Location = new System.Drawing.Point(157, 33);
+            this.days.Location = new System.Drawing.Point(167, 33);
             this.days.Name = "days";
             this.days.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.days.Size = new System.Drawing.Size(77, 101);
@@ -148,7 +148,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(154, 16);
+            this.label3.Location = new System.Drawing.Point(164, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 10;
@@ -157,7 +157,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(252, 16);
+            this.label4.Location = new System.Drawing.Point(367, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 13);
             this.label4.TabIndex = 11;
@@ -167,7 +167,7 @@
             // 
             this.image.Location = new System.Drawing.Point(12, 12);
             this.image.Name = "image";
-            this.image.Size = new System.Drawing.Size(108, 102);
+            this.image.Size = new System.Drawing.Size(136, 122);
             this.image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.image.TabIndex = 12;
             this.image.TabStop = false;
@@ -176,7 +176,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(509, 201);
+            this.ClientSize = new System.Drawing.Size(503, 201);
             this.Controls.Add(this.image);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);

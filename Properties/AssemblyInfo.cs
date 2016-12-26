@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PdfMailer2")]
+[assembly: AssemblyTitle("Cliver.fril.jp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CliverSoft")]
-[assembly: AssemblyProduct("PdfMailer2")]
+[assembly: AssemblyProduct("Cliver.fril.jp")]
 [assembly: AssemblyCopyright("Copyright © 20016 CliverSoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
