@@ -31,34 +31,59 @@ namespace Cliver.fril.jp
     {
         static Service()
         {
-            ProductForm.Change += ProductForm_Change;
+            //must be called from the main ui thread!
+            // bf = new Browser2Form();
         }
 
-        private static void ProductForm_Change()
+        public static bool Running
         {
-            Start();
-        }
+            set
+            {
+                if (value)
+                {
+                    //if (schedule_prices_t == null || !schedule_prices_t.IsAlive)
+                    //    schedule_prices_t = Cliver.ThreadRoutines.StartTry(schedule_prices);
+                    if (set_prices_t == null || !set_prices_t.IsAlive)
+                    {
+                        Thread t = new Thread(() =>
+                        {
+                            bf = new Browser2Form();
+                            Application.Run();
+                        });
+                        t.SetApartmentState(ApartmentState.STA);
+                        t.Start();
+                        SleepRoutines.WaitForObject(() =>
+                        {
+                            return bf;
+                        }, 1000);
 
-        public static void Start()
-        {
-            if (t != null && t.IsAlive)
-                // t.Abort();
-                return;
-            //load_PriceChanges();
-            t = Cliver.ThreadRoutines.StartTry(run);
+                        set_prices_t = Cliver.ThreadRoutines.StartTry(set_prices);
+                    }
+                }
+                else
+                {
+                    if (set_prices_t != null && set_prices_t.IsAlive)
+                        set_prices_t.Abort();
+                }
+            }
+            get
+            {
+                return set_prices_t != null && set_prices_t.IsAlive && schedule_prices_t != null && schedule_prices_t.IsAlive;
+            }
         }
+        static Thread set_prices_t = null;
+        readonly static Thread schedule_prices_t = Cliver.ThreadRoutines.StartTry(schedule_prices);
 
-        static Thread t = null;
-        
         readonly static Dictionary<string, LastPrice> pids2LastPrice = new Dictionary<string, LastPrice>();
         class LastPrice
         {
-            public float Price;
+            public uint Price;
             public string ProductId;
             public bool Synchronized = false;
+            public DateTime AttemptTime = DateTime.Now;
         }
 
-        static void run()
+        static void schedule_prices()
         {
             while (true)
             {
@@ -68,7 +93,16 @@ namespace Cliver.fril.jp
                     {
                         foreach (string pid in Settings.Products.Ids2Products.Keys)
                         {
-                            Settings.PriceChange pc = Settings.Products.Ids2Products[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
+                            //if (Settings.Products.Ids2Products[pid].Deleted)
+                            //    continue;
+                            if (Settings.Products.Ids2Products[pid].PriceChanges.Count < 1)
+                                continue;
+
+                            Settings.PriceChange pc = null;
+                            if (Settings.Products.Ids2Products[pid].Days.Contains((int)DateTime.Now.DayOfWeek))
+                                pc = Settings.Products.Ids2Products[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
+                            if (pc == null)
+                                pc = Settings.Products.Ids2Products[pid].PriceChanges.OrderBy(x => x.Time).LastOrDefault();
 
                             LastPrice lp;
                             if (!pids2LastPrice.TryGetValue(pid, out lp))
@@ -81,7 +115,8 @@ namespace Cliver.fril.jp
                                 if (lp.Price == pc.Price)
                                     continue;
                                 lp.Price = pc.Price;
-                                lp.Synchronized = true;
+                                lp.AttemptTime = DateTime.Now;
+                                lp.Synchronized = false;
                             }
                         }
                     }
@@ -89,32 +124,155 @@ namespace Cliver.fril.jp
                 Thread.Sleep(1000);
             }
         }
-        readonly Thread set_price_t = Cliver.ThreadRoutines.StartTry(set_prices);
-        
+
         static void set_prices()
         {
-            while (true)
+            try
             {
-                LastPrice lp;
-                lock (pids2LastPrice)
+                while (true)
                 {
-                    lp = pids2LastPrice.Values.Where(x => !x.Synchronized).FirstOrDefault();
+                    LastPrice lp;
+                    lock (pids2LastPrice)
+                    {
+                        lp = pids2LastPrice.Values.Where(x => !x.Synchronized && x.AttemptTime < DateTime.Now).FirstOrDefault();
+                    }
+                    if (lp == null)
+                    {
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                    switch (set_price(lp.Price, lp.ProductId))
+                    {
+                        case SiteProduct.ERROR:
+                            Log.Warning("Price was not set for product " + lp.ProductId + ". Will retry in " + AttemptDelayInMins);
+                            lock (pids2LastPrice)
+                            {
+                                lp.AttemptTime = DateTime.Now.AddMinutes(AttemptDelayInMins);
+                            }
+                            break;
+                        case SiteProduct.PRODUCT_ABSENT:
+                            Log.Warning("Product " + lp.ProductId + " is absent on site.");
+                            lock (Settings.Products.Ids2Products)
+                            {
+                                Settings.Products.Ids2Products.Remove(lp.ProductId);
+                                // Settings.Products.Ids2Products[pid].Deleted
+                            }
+                            lock (pids2LastPrice)
+                            {
+                                pids2LastPrice.Remove(lp.ProductId);
+                            }
+                            break;
+                        case SiteProduct.SYNCHRONIZED:
+                            lp.Synchronized = true;
+                            Log.Main.Inform("Price " + lp.Price + " set to product: " + lp.ProductId);
+                            break;
+                        default:
+                            throw new Exception("No such option exists");
+                    }
                 }
-                if (lp == null)
-                {
-                    Thread.Sleep(1000);
-                    continue;
-                }
-                set_price(lp.Price, lp.ProductId);
-                lp.Synchronized = true;
+            }
+            catch (ThreadAbortException)
+            {
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
             }
         }
+        const int AttemptDelayInMins = 10;
 
-        static void set_price(float price, string pid)
+        enum SiteProduct
         {
-            //bro
-            //sell_price
+            ERROR,
+            PRODUCT_ABSENT,
+            SYNCHRONIZED
+        }
 
+        static SiteProduct set_price(uint price, string pid)
+        {
+            return (SiteProduct)bf.Invoke(() =>
+            {
+                string url = "https://fril.jp/item/" + pid + "/edit";
+                bf.Browser.Navigate(url);
+                if (!SleepRoutines.WaitForCondition(() =>
+                {
+                    return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, pid, RegexOptions.IgnoreCase);
+                }, 30000))
+                {
+                    Log.Error("Could not Navigate");
+                    return SiteProduct.ERROR;
+                }
+
+                HtmlElement he = get_he("sell_price");
+                if (he == null)
+                {
+                    if (bf.Browser.ReadyState == WebBrowserReadyState.Complete)
+                        return SiteProduct.PRODUCT_ABSENT;
+                    return SiteProduct.ERROR;
+                }
+                if (he.GetAttribute("value") == price.ToString())
+                    return SiteProduct.SYNCHRONIZED;
+                he.SetAttribute("value", price.ToString());
+
+                he = get_he("confirm");
+                if (he == null)
+                    return SiteProduct.ERROR;
+                he.RaiseEvent("onclick");
+                he.InvokeMember("Click");
+                if (!SleepRoutines.WaitForCondition(() =>
+                {
+                    var e = bf.Browser.Document.GetElementById("confirm-content");
+                    if (e == null)
+                        return false;
+                    if (Regex.IsMatch(e.Style, @"display:\s*none", RegexOptions.IgnoreCase))
+                        return false;
+                    return true;
+
+                }, 30000))
+                {
+                    Log.Error("Could not confirm");
+                    return SiteProduct.ERROR;
+                }
+
+                he = get_he("error");
+                if (he == null)
+                    return SiteProduct.ERROR;
+                if (!string.IsNullOrWhiteSpace(he.InnerHtml))
+                {
+                    Log.Error("Validation error: " + he.InnerHtml);
+                    return SiteProduct.ERROR;
+                }
+
+                he = get_he("submit");
+                if (he == null)
+                    return SiteProduct.ERROR;
+                he.RaiseEvent("onclick");
+                he.InvokeMember("Click");
+                if (!SleepRoutines.WaitForCondition(() =>
+                {
+                    return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, @"fril\.jp/sell", RegexOptions.IgnoreCase);
+                }, 30000))
+                {
+                    Log.Error("Could not save price");
+                    return SiteProduct.ERROR;
+                }
+
+                return SiteProduct.SYNCHRONIZED;
+            });
+        }
+        static Browser2Form bf = null;
+
+        static HtmlElement get_he(string id)
+        {
+            HtmlElement he = (HtmlElement)SleepRoutines.WaitForObject(() =>
+            {
+                if (bf.Browser.Document == null)
+                    return null;
+                return bf.Browser.Document.GetElementById(id);
+            }, 30000);
+            if (he == null)
+                Log.Error("Could not get HtmlElement: " + id);
+            return he;
         }
     }
 }

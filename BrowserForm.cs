@@ -13,7 +13,7 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class BrowserForm : Form//BaseForm//
+    public partial class BrowserForm : BaseForm//Form//
     {
         public BrowserForm()
         {
@@ -90,9 +90,12 @@ $('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value
 
         public void EditProduct(string id, string image_src)
         {
-            id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
-            ProductForm pf = new ProductForm(id, image_src);
-            pf.ShowDialog();
+            ControlRoutines.BeginInvoke(this, () =>
+            {
+                id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
+                ProductForm pf = new ProductForm(id, image_src);
+                pf.ShowDialog();
+            });
         }
     }
 }

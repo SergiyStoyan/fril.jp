@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Cliver.fril.jp
 {
@@ -24,7 +25,12 @@ namespace Cliver.fril.jp
         {
             InitializeComponent();
 
-            //StartStop.Checked = Properties.Settings.Default.Run;
+            RightClickMenu.Opening += RightClickMenu_Opening;
+        }
+
+        private void RightClickMenu_Opening(object sender, CancelEventArgs e)
+        {
+            StartStop.Checked = Service.Running;
         }
 
         public static readonly SysTray This = new SysTray();
@@ -62,9 +68,12 @@ namespace Cliver.fril.jp
 
         private void StartStop_CheckedChanged(object sender, EventArgs e)
         {
-            //Properties.Settings.Default.Run = StartStop.Checked;
-            //Properties.Settings.Default.Save();
-            //Program.UpdateService();
+            Service.Running = StartStop.Checked;
+        }
+
+        private void workDirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Log.WorkDir);
         }
     }
 }

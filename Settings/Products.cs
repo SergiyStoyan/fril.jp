@@ -22,7 +22,7 @@ namespace Cliver.fril.jp
 
         public class PriceChange
         {
-            public float Price;
+            public uint Price;
             public TimeSpan Time;
         }
 
@@ -31,6 +31,7 @@ namespace Cliver.fril.jp
             public string Id;
             public List<int> Days;
             public List<PriceChange> PriceChanges;
+            //public bool Deleted = false;
 
             //[ScriptIgnore]
             [Newtonsoft.Json.JsonIgnore]

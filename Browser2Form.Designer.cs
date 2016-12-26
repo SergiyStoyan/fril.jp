@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.browser = new System.Windows.Forms.WebBrowser();
+            this.Browser = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
-            // browser
+            // Browser
             // 
-            this.browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.browser.Location = new System.Drawing.Point(0, 0);
-            this.browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.browser.Name = "browser";
-            this.browser.Size = new System.Drawing.Size(937, 409);
-            this.browser.TabIndex = 0;
+            this.Browser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Browser.Location = new System.Drawing.Point(0, 0);
+            this.Browser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.Browser.Name = "Browser";
+            this.Browser.Size = new System.Drawing.Size(937, 409);
+            this.Browser.TabIndex = 0;
             // 
-            // BrowserForm
+            // Browser2Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(937, 409);
-            this.Controls.Add(this.browser);
-            this.Name = "BrowserForm";
+            this.Controls.Add(this.Browser);
+            this.Name = "Browser2Form";
             this.Text = "BrowserForm";
             this.ResumeLayout(false);
 
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private System.Windows.Forms.WebBrowser browser;
+        public System.Windows.Forms.WebBrowser Browser;
     }
 }

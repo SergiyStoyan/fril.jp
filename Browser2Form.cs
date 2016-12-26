@@ -18,7 +18,7 @@ namespace Cliver.fril.jp
         public Browser2Form()
         {
             InitializeComponent();
-            
+
             //CefSettings settings = new CefSettings();
             //// Initialize cef with the provided settings
             //Cef.Initialize(settings);
@@ -37,32 +37,24 @@ namespace Cliver.fril.jp
             //        if (!Cliver.Win32.InternetSetCookie(c.path, c.name, c.value))
             //            throw new Exception("Could not set cookie");
 
-            browser.ObjectForScripting = this;
-            browser.DocumentCompleted += Browser_DocumentCompleted;
-            browser.Navigated += Browser_Navigated;
-            browser.ProgressChanged += Browser_ProgressChanged;
-            browser.Navigate(Url);
+            Browser.ScriptErrorsSuppressed = true;
+            Browser.ObjectForScripting = this;
+            Browser.DocumentCompleted += Browser_DocumentCompleted;
+            Browser.Navigated += Browser_Navigated;
+            Browser.ProgressChanged += Browser_ProgressChanged;
+
+            if (!IsHandleCreated)
+                CreateHandle();
 
             this.Visible = false;
+            //Show();
         }
-
-        const string Url = "https://fril.jp/sell";
 
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
-            if (browser.Url == null || !browser.Url.AbsoluteUri.Contains(Url))
-                return;
-            //if (browser.ReadyState == WebBrowserReadyState.Interactive)
-            //{
-            //    HtmlElement s = browser.Document.CreateElement("script");
-            //    s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
-            //    browser.Document.Body.AppendChild(s);
-            //}
-            if (browser.ReadyState == WebBrowserReadyState.Complete)
-            {
-                add_buttons();
-            }
+            ManagedWebBrowserReadyState = Browser.ReadyState;
         }
+       public WebBrowserReadyState ManagedWebBrowserReadyState = WebBrowserReadyState.Uninitialized;
 
         private void Browser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
@@ -70,28 +62,27 @@ namespace Cliver.fril.jp
 
         private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            add_buttons();
         }
 
-        private void add_buttons()
-        {
-            string script = @"
-$('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value) {
-//alert($(this).find('._added').length);
-    if($(this).find('._added').length > 0) return;
-//alert($(this).find('a:first').attr('href'));
-    var pid = $(this).find('a:first').attr('href');
-    var image_src = $(this).closest('.media').find('img:first').attr('src');
-    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>prices</a>"");
-}); ";
-            browser.Document.InvokeScript("eval", new object[] { script });
-        }
+//        private void add_buttons()
+//        {
+//            string script = @"
+//$('.col-lg-4.col-md-4.col-sm-4.col-xs-4.text-right').each(function (index, value) {
+////alert($(this).find('._added').length);
+//    if($(this).find('._added').length > 0) return;
+////alert($(this).find('a:first').attr('href'));
+//    var pid = $(this).find('a:first').attr('href');
+//    var image_src = $(this).closest('.media').find('img:first').attr('src');
+//    $(this).append(""<a class='btn btn-default _added' onclick='window.external.EditProduct(\"""" + pid + ""\"", \"""" + image_src + ""\""); ' href='#'>prices</a>"");
+//}); ";
+//            Browser.Document.InvokeScript("eval", new object[] { script });
+//        }
 
-        public void EditProduct(string id, string image_src)
-        {
-            id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
-            ProductForm pf = new ProductForm(id, image_src);
-            pf.ShowDialog();
-        }
+//        public void EditProduct(string id, string image_src)
+//        {
+//            id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
+//            ProductForm pf = new ProductForm(id, image_src);
+//            pf.ShowDialog();
+//        }
     }
 }

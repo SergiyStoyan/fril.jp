@@ -37,11 +37,10 @@ namespace Cliver.fril.jp
                     foreach (Settings.PriceChange pc in p.PriceChanges)
                         prices.Items.Add(new PriceItem(pc.Time, pc.Price));
                 }
+                for (int i = 0; i < 7; i++)
+                    days.SelectedIndex = i;
             }
         }
-
-        public delegate void OnChange();
-        public static event OnChange Change = null;
 
         readonly string Id;
         //readonly string Url;
@@ -53,8 +52,8 @@ namespace Cliver.fril.jp
                 string p_ = price.Text;
                 if (string.IsNullOrWhiteSpace(p_))
                     throw new Exception("Price not set.");
-                float p;
-                if (!float.TryParse(p_, out p))
+                uint p;
+                if (!uint.TryParse(p_, out p))
                     throw new Exception("Price is wrong.");
 
                 PriceItem price_item = new PriceItem(time.Value.TimeOfDay, p);
@@ -90,10 +89,10 @@ namespace Cliver.fril.jp
         public class PriceItem
         {
             public TimeSpan Time { get; set; }
-            public float Price { get; set; }
+            public uint Price { get; set; }
             public string Text { get; set; }
 
-            public PriceItem(TimeSpan time, float price)
+            public PriceItem(TimeSpan time, uint price)
             {
                 Text = price.ToString() + " at " + time.ToString(@"hh\:mm\:ss");
                 Price = price;
@@ -144,7 +143,6 @@ namespace Cliver.fril.jp
                 Settings.Products.Save();
             }
             Close();
-            Change?.Invoke();
         }
 
         private void bCancel_Click(object sender, EventArgs e)

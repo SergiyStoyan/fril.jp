@@ -33,10 +33,11 @@
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.RightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.StartStop = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.StartStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.workDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RightClickMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,11 +55,12 @@
             this.RightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.StartStop,
+            this.workDirToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.RightClickMenu.Name = "Menu";
-            this.RightClickMenu.Size = new System.Drawing.Size(153, 120);
+            this.RightClickMenu.Size = new System.Drawing.Size(153, 142);
             // 
             // settingsToolStripMenuItem
             // 
@@ -67,6 +69,14 @@
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // StartStop
+            // 
+            this.StartStop.CheckOnClick = true;
+            this.StartStop.Name = "StartStop";
+            this.StartStop.Size = new System.Drawing.Size(152, 22);
+            this.StartStop.Text = "Run On...";
+            this.StartStop.CheckedChanged += new System.EventHandler(this.StartStop_CheckedChanged);
             // 
             // aboutToolStripMenuItem
             // 
@@ -87,13 +97,12 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // StartStop
+            // workDirToolStripMenuItem
             // 
-            this.StartStop.CheckOnClick = true;
-            this.StartStop.Name = "StartStop";
-            this.StartStop.Size = new System.Drawing.Size(152, 22);
-            this.StartStop.Text = "Run On...";
-            this.StartStop.CheckedChanged += new System.EventHandler(this.StartStop_CheckedChanged);
+            this.workDirToolStripMenuItem.Name = "workDirToolStripMenuItem";
+            this.workDirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.workDirToolStripMenuItem.Text = "Work Dir";
+            this.workDirToolStripMenuItem.Click += new System.EventHandler(this.workDirToolStripMenuItem_Click);
             // 
             // SysTray
             // 
@@ -121,5 +130,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StartStop;
+        private System.Windows.Forms.ToolStripMenuItem workDirToolStripMenuItem;
     }
 }

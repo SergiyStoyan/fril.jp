@@ -148,7 +148,9 @@
     <Compile Include="SysTrayForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SysTrayForm.designer.cs" />
+    <Compile Include="SysTrayForm.designer.cs">
+      <DependentUpon>SysTrayForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">

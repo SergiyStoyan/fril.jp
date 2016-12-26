@@ -47,12 +47,13 @@ namespace Cliver.fril.jp
         {
             try
             {
-                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 23);
+                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
 
+                Log.Initialize(Log.Mode.ONLY_LOG);
                 Cliver.Config.Initialize(new string[] { "Products"/*, "Engine", "Log"*/ });
                 Cliver.Config.Reload();
 
-                Service.Start();
+                Service.Running = true;
 
                 Application.Run(SysTray.This);
             }
