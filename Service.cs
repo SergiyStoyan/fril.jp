@@ -154,6 +154,7 @@ namespace Cliver.fril.jp
                             {
                                 Settings.Products.Ids2Products.Remove(lp.ProductId);
                                 // Settings.Products.Ids2Products[pid].Deleted
+                                Settings.Products.Save();
                             }
                             lock (pids2LastPrice)
                             {

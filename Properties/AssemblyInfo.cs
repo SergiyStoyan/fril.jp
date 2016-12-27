@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cliver.fril.jp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("CliverSoft")]
+[assembly: AssemblyCompany("CliverSoft.com")]
 [assembly: AssemblyProduct("Cliver.fril.jp")]
-[assembly: AssemblyCopyright("Copyright © 20016 CliverSoft")]
+[assembly: AssemblyCopyright("Copyright © 20016 CliverSoft.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

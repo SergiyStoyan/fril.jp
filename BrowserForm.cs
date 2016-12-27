@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Cliver;
 
+//LOGIN:
+//mrsweeves @i.softbank.jp
+//Crusaders-1
+
+
 namespace Cliver.fril.jp
 {
     public partial class BrowserForm : Form//BaseForm//

@@ -10,7 +10,7 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class ProductForm : Form//BaseForm//
+    public partial class ProductForm : BaseForm//Form//
     {
         public ProductForm(string id, string image_url)
         {
@@ -36,8 +36,9 @@ namespace Cliver.fril.jp
                     foreach (Settings.PriceChange pc in p.PriceChanges)
                         prices.Items.Add(new PriceItem(pc.Time, pc.Price));
                 }
-                for (int i = 0; i < 7; i++)
-                    days.SelectedIndex = i;
+                else
+                    for (int i = 0; i < 7; i++)
+                        days.SelectedIndex = i;
             }
         }
 
