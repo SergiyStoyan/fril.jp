@@ -51,7 +51,7 @@ namespace Cliver.fril.jp
 
                 InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
 
-                //Service.Running = true;
+                Service.Running = true;
 
                 Application.Run(SysTray.This);
             }
