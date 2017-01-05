@@ -41,6 +41,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.image = new System.Windows.Forms.PictureBox();
+            this.ScheduleName = new System.Windows.Forms.TextBox();
+            this.SaveSchedule = new System.Windows.Forms.Button();
+            this.Choose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.image)).BeginInit();
             this.SuspendLayout();
             // 
@@ -127,7 +130,7 @@
             // 
             // bCancel
             // 
-            this.bCancel.Location = new System.Drawing.Point(415, 166);
+            this.bCancel.Location = new System.Drawing.Point(416, 195);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 23);
             this.bCancel.TabIndex = 8;
@@ -137,7 +140,7 @@
             // 
             // bOK
             // 
-            this.bOK.Location = new System.Drawing.Point(334, 166);
+            this.bOK.Location = new System.Drawing.Point(335, 195);
             this.bOK.Name = "bOK";
             this.bOK.Size = new System.Drawing.Size(75, 23);
             this.bOK.TabIndex = 9;
@@ -172,11 +175,41 @@
             this.image.TabIndex = 12;
             this.image.TabStop = false;
             // 
+            // ScheduleName
+            // 
+            this.ScheduleName.Location = new System.Drawing.Point(416, 144);
+            this.ScheduleName.Name = "ScheduleName";
+            this.ScheduleName.Size = new System.Drawing.Size(75, 20);
+            this.ScheduleName.TabIndex = 14;
+            // 
+            // SaveSchedule
+            // 
+            this.SaveSchedule.Location = new System.Drawing.Point(348, 141);
+            this.SaveSchedule.Name = "SaveSchedule";
+            this.SaveSchedule.Size = new System.Drawing.Size(62, 23);
+            this.SaveSchedule.TabIndex = 13;
+            this.SaveSchedule.Text = "Save As:";
+            this.SaveSchedule.UseVisualStyleBackColor = true;
+            this.SaveSchedule.Click += new System.EventHandler(this.SaveSchedule_Click);
+            // 
+            // Choose
+            // 
+            this.Choose.Location = new System.Drawing.Point(278, 141);
+            this.Choose.Name = "Choose";
+            this.Choose.Size = new System.Drawing.Size(64, 23);
+            this.Choose.TabIndex = 15;
+            this.Choose.Text = "Choose";
+            this.Choose.UseVisualStyleBackColor = true;
+            this.Choose.Click += new System.EventHandler(this.Choose_Click);
+            // 
             // ProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(503, 201);
+            this.ClientSize = new System.Drawing.Size(503, 230);
+            this.Controls.Add(this.Choose);
+            this.Controls.Add(this.ScheduleName);
+            this.Controls.Add(this.SaveSchedule);
             this.Controls.Add(this.image);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -215,5 +248,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox image;
+        private System.Windows.Forms.TextBox ScheduleName;
+        private System.Windows.Forms.Button SaveSchedule;
+        private System.Windows.Forms.Button Choose;
     }
 }

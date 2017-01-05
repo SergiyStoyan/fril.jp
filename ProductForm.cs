@@ -26,10 +26,10 @@ namespace Cliver.fril.jp
             image.ImageLocation = image_url;
             //link.Links[0].
 
-            lock (Settings.Products.Ids2Products)
+            lock (Settings.Products.Ids2Product)
             {
                 Settings.Product p;
-                if (Settings.Products.Ids2Products.TryGetValue(id, out p))
+                if (Settings.Products.Ids2Product.TryGetValue(id, out p))
                 {
                     foreach (int d in p.Days)
                         days.SelectedIndex = d;
@@ -128,9 +128,9 @@ namespace Cliver.fril.jp
                 p.Id = Id;
                 p.PriceChanges = pcs;
                 //p.Url = Url;
-                lock (Settings.Products.Ids2Products)
+                lock (Settings.Products.Ids2Product)
                 {
-                    Settings.Products.Ids2Products[p.Id] = p;
+                    Settings.Products.Ids2Product[p.Id] = p;
                 }
             }
             catch (Exception ex)
@@ -148,6 +148,48 @@ namespace Cliver.fril.jp
         private void bCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void SaveSchedule_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string sn = ScheduleName.Text;
+                if (string.IsNullOrWhiteSpace(sn))
+                    throw new Exception("Name is not specified.");
+
+                List<Settings.PriceChange> pcs = new List<Settings.PriceChange>();
+                for (int i = 0; i < prices.Items.Count; i++)
+                {
+                    PriceItem pi = (PriceItem)prices.Items[i];
+                    pcs.Add(new Settings.PriceChange() { Price = pi.Price, Time = pi.Time });
+                }
+                List<int> ds = new List<int>();
+                foreach (int i in days.SelectedIndices)
+                    ds.Add(i);
+
+                Settings.Schedules.Names2Schedule[sn] = new Settings.Schedule { Days = ds, PriceChanges = pcs };
+                Settings.Schedules.Save();
+            }
+            catch (Exception ex)
+            {
+                Message.Error(ex);
+            }
+        }
+
+        private void Choose_Click(object sender, EventArgs e)
+        {
+            ScheduleForm sf = new ScheduleForm();
+            sf.ShowDialog();
+            if (sf.SelectedScheduleName == null)
+                return;
+            Settings.Schedule s = Settings.Schedules.Names2Schedule[sf.SelectedScheduleName];
+            days.ClearSelected();
+            foreach (int d in s.Days)
+                days.SelectedIndex = d;
+            prices.Items.Clear();
+            foreach (Settings.PriceChange pc in s.PriceChanges)
+                prices.Items.Add(new PriceItem(pc.Time, pc.Price));
         }
     }
 }

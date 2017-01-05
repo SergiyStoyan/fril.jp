@@ -46,10 +46,10 @@ namespace Cliver.fril.jp
             try
             {
                 Log.Initialize(Log.Mode.ONLY_LOG, null, true, 5);
-                Cliver.Config.Initialize(new string[] { "Products"/*, "Engine", "Log"*/ });
+                Cliver.Config.Initialize(new string[] { "Products", "Schedules" });
                 Cliver.Config.Reload();
 
-                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
+                //InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2016, 12, 30);
 
                 Service.Running = true;
 

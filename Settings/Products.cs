@@ -11,13 +11,13 @@ using System.Web.Script.Serialization;
 
 namespace Cliver.fril.jp
 {
-    public class Settings
+    public partial class Settings
     {
         public static readonly ProductsSettings Products;
 
         public class ProductsSettings : Cliver.Settings
         {
-            public Dictionary<string, Product> Ids2Products = new Dictionary<string, Product>();
+            public Dictionary<string, Product> Ids2Product = new Dictionary<string, Product>();
         }
 
         public class PriceChange

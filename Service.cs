@@ -53,7 +53,7 @@ namespace Cliver.fril.jp
                         SleepRoutines.WaitForObject(() =>
                         {
                             return bf;
-                        }, 1000);
+                        }, 3000);
 
                         set_prices_t = Cliver.ThreadRoutines.StartTry(set_prices);
                     }
@@ -87,20 +87,20 @@ namespace Cliver.fril.jp
             {
                 lock (pids2LastPrice)
                 {
-                    lock (Settings.Products.Ids2Products)
+                    lock (Settings.Products.Ids2Product)
                     {
-                        foreach (string pid in Settings.Products.Ids2Products.Keys)
+                        foreach (string pid in Settings.Products.Ids2Product.Keys)
                         {
                             //if (Settings.Products.Ids2Products[pid].Deleted)
                             //    continue;
-                            if (Settings.Products.Ids2Products[pid].PriceChanges.Count < 1)
+                            if (Settings.Products.Ids2Product[pid].PriceChanges.Count < 1)
                                 continue;
 
                             Settings.PriceChange pc = null;
-                            if (Settings.Products.Ids2Products[pid].Days.Contains((int)DateTime.Now.DayOfWeek))
-                                pc = Settings.Products.Ids2Products[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
+                            if (Settings.Products.Ids2Product[pid].Days.Contains((int)DateTime.Now.DayOfWeek))
+                                pc = Settings.Products.Ids2Product[pid].PriceChanges.Where(x => DateTime.Now.Date + x.Time < DateTime.Now).OrderBy(x => x.Time).LastOrDefault();
                             if (pc == null)
-                                pc = Settings.Products.Ids2Products[pid].PriceChanges.OrderBy(x => x.Time).LastOrDefault();
+                                pc = Settings.Products.Ids2Product[pid].PriceChanges.OrderBy(x => x.Time).LastOrDefault();
 
                             LastPrice lp;
                             if (!pids2LastPrice.TryGetValue(pid, out lp))
@@ -150,9 +150,9 @@ namespace Cliver.fril.jp
                             break;
                         case SiteProduct.PRODUCT_ABSENT:
                             Log.Main.Warning("Product " + lp.ProductId + " is absent on site.");
-                            lock (Settings.Products.Ids2Products)
+                            lock (Settings.Products.Ids2Product)
                             {
-                                Settings.Products.Ids2Products.Remove(lp.ProductId);
+                                Settings.Products.Ids2Product.Remove(lp.ProductId);
                                 // Settings.Products.Ids2Products[pid].Deleted
                                 Settings.Products.Save();
                             }
