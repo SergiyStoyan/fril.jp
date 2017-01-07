@@ -10,7 +10,7 @@ using Cliver;
 
 namespace Cliver.fril.jp
 {
-    public partial class ProductForm : BaseForm//Form//
+    public partial class ProductForm : Form//BaseForm//
     {
         public ProductForm(string id, string image_url)
         {
@@ -90,11 +90,10 @@ namespace Cliver.fril.jp
         {
             public TimeSpan Time { get; set; }
             public uint Price { get; set; }
-            public string Text { get; set; }
+            public string Text { get { return Price.ToString() + " at " + Time.ToString(@"hh\:mm\:ss");}  }
 
             public PriceItem(TimeSpan time, uint price)
             {
-                Text = price.ToString() + " at " + time.ToString(@"hh\:mm\:ss");
                 Price = price;
                 Time = time;
             }
@@ -190,6 +189,47 @@ namespace Cliver.fril.jp
             prices.Items.Clear();
             foreach (Settings.PriceChange pc in s.PriceChanges)
                 prices.Items.Add(new PriceItem(pc.Time, pc.Price));
+        }
+
+        private void addMinutes_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < prices.Items.Count; i++)
+            {
+                PriceItem pi = (PriceItem)prices.Items[i];
+                pi.Time = pi.Time.Add(new TimeSpan(0, 1, 0));
+                prices.Items[i] = pi;
+            }
+            prices.Refresh();
+        }
+
+        private void subtractMinutes_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < prices.Items.Count; i++)
+            {
+                PriceItem pi = (PriceItem)prices.Items[i];
+                pi.Time = pi.Time.Subtract(new TimeSpan(0, 1, 0));
+                prices.Items[i] = pi;
+            }
+        }
+
+        private void addSeconds_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < prices.Items.Count; i++)
+            {
+                PriceItem pi = (PriceItem)prices.Items[i];
+                pi.Time = pi.Time.Add(new TimeSpan(0, 0, 1));
+                prices.Items[i] = pi;
+            }
+        }
+
+        private void subtractSeconds_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < prices.Items.Count; i++)
+            {
+                PriceItem pi = (PriceItem)prices.Items[i];
+                pi.Time = pi.Time.Subtract(new TimeSpan(0, 0, 1));
+                prices.Items[i] = pi;
+            }
         }
     }
 }
