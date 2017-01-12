@@ -29,8 +29,9 @@ namespace Cliver.fril.jp
         {
             if (schedules.SelectedIndex < 0)
                 return;
+            string schedule_name = (string)schedules.SelectedItem;
             schedules.Items.RemoveAt(schedules.SelectedIndex);
-            Settings.Schedules.Names2Schedule.Remove((string)schedules.SelectedItem);
+            Settings.Schedules.Names2Schedule.Remove(schedule_name);
             Settings.Schedules.Save();
         }
 
