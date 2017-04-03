@@ -139,9 +139,15 @@ namespace Cliver.fril.jp
                         Thread.Sleep(1000);
                         continue;
                     }
+                    int try_count = 0;
+                    RETRY:
                     switch (set_price(lp.Price, lp.ProductId))
                     {
                         case SiteProduct.ERROR:
+                            {
+                                Log.Main.Write("Price was not set for product " + lp.ProductId + ". Retrying...");
+                                goto RETRY;
+                            }
                             Log.Main.Warning("Price was not set for product " + lp.ProductId + ". Will retry in " + AttemptDelayInMins + " minutes.");
                             lock (pids2LastPrice)
                             {
@@ -229,7 +235,7 @@ namespace Cliver.fril.jp
 
                 }, 30000))
                 {
-                    Log.Main.Error("Could not confirm");
+                    Log.Main.Error("Price is not confirmed");
                     return SiteProduct.ERROR;
                 }
 

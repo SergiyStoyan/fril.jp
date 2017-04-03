@@ -32,7 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SysTray));
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.RightClickMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scheduleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SettingsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StartStop = new System.Windows.Forms.ToolStripMenuItem();
             this.workDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,54 +55,62 @@
             // RightClickMenu
             // 
             this.RightClickMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.settingsToolStripMenuItem,
+            this.scheduleToolStripMenuItem,
+            this.SettingsStripMenuItem,
             this.StartStop,
             this.workDirToolStripMenuItem,
             this.aboutToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.RightClickMenu.Name = "Menu";
-            this.RightClickMenu.Size = new System.Drawing.Size(124, 120);
+            this.RightClickMenu.Size = new System.Drawing.Size(153, 164);
             // 
-            // settingsToolStripMenuItem
+            // scheduleToolStripMenuItem
             // 
-            this.settingsToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.scheduleToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.scheduleToolStripMenuItem.Name = "scheduleToolStripMenuItem";
+            this.scheduleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.scheduleToolStripMenuItem.Text = "Schedule";
+            this.scheduleToolStripMenuItem.Click += new System.EventHandler(this.scheduleToolStripMenuItem_Click);
+            // 
+            // SettingsStripMenuItem
+            // 
+            this.SettingsStripMenuItem.Name = "SettingsStripMenuItem";
+            this.SettingsStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.SettingsStripMenuItem.Text = "Settings";
+            this.SettingsStripMenuItem.Click += new System.EventHandler(this.SettingsStripMenuItem_Click);
             // 
             // StartStop
             // 
             this.StartStop.CheckOnClick = true;
             this.StartStop.Name = "StartStop";
-            this.StartStop.Size = new System.Drawing.Size(123, 22);
+            this.StartStop.Size = new System.Drawing.Size(152, 22);
             this.StartStop.Text = "Run On...";
             this.StartStop.CheckedChanged += new System.EventHandler(this.StartStop_CheckedChanged);
             // 
             // workDirToolStripMenuItem
             // 
             this.workDirToolStripMenuItem.Name = "workDirToolStripMenuItem";
-            this.workDirToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.workDirToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.workDirToolStripMenuItem.Text = "Work Dir";
             this.workDirToolStripMenuItem.Click += new System.EventHandler(this.workDirToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -126,11 +135,12 @@
 
         private System.Windows.Forms.NotifyIcon notifyIcon;
         private System.Windows.Forms.ContextMenuStrip RightClickMenu;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scheduleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StartStop;
         private System.Windows.Forms.ToolStripMenuItem workDirToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SettingsStripMenuItem;
     }
 }

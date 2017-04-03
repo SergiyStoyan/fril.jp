@@ -36,10 +36,10 @@ namespace Cliver.fril.jp
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
-            settingsToolStripMenuItem_Click(null, null);
+            scheduleToolStripMenuItem_Click(null, null);
         }
 
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void scheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BrowserForm bf = new BrowserForm();
             bf.ShowDialog();
@@ -86,6 +86,11 @@ private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 
         private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
+        }
+
+        private void SettingsStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsForm.Open();
         }
     }
 }
