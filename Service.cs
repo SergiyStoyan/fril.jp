@@ -144,6 +144,7 @@ namespace Cliver.fril.jp
                     switch (set_price(lp.Price, lp.ProductId))
                     {
                         case SiteProduct.ERROR:
+                            if (try_count++ < Settings.General.MaxTryCount)
                             {
                                 Log.Main.Write("Price was not set for product " + lp.ProductId + ". Retrying...");
                                 goto RETRY;
