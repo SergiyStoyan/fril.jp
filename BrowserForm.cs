@@ -47,8 +47,6 @@ namespace Cliver.fril.jp
             browser.Navigated += Browser_Navigated;
             browser.ProgressChanged += Browser_ProgressChanged;
             browser.Navigate(Url);
-
-
         }
 
         const string Url = "https://fril.jp/sell";
