@@ -106,12 +106,12 @@ return done;
         private object PerformScript(string script)
         {
             script = @"(function() {" + script + @"}())";
-            return browser.Document.InvokeScript("eval", new object[] { script });
+            return browser.Invoke(() => { return browser.Document.InvokeScript("eval", new object[] { script }); });
         }
 
         public void EditProduct(string id, string image_src)
         {
-            ControlRoutines.BeginInvoke(this, () =>
+            this.BeginInvoke(() =>
             {
                 id = Regex.Replace(id, "/item/(.*?)/edit", "$1");
                 ProductForm pf = new ProductForm(id, image_src);
