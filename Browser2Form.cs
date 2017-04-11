@@ -57,6 +57,7 @@ namespace Cliver.fril.jp
                     ControlRoutines.InvokeFromUiThread(() =>
                     {
                         bf = new Browser2Form();
+                        var h = bf.Handle;
                     });
                 }
                 return bf.browser;

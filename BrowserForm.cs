@@ -17,7 +17,7 @@ namespace Cliver.fril.jp
 {
     public partial class BrowserForm : Form//BaseForm//
     {
-        BrowserForm()
+        public BrowserForm()
         {
             InitializeComponent();
 
@@ -50,15 +50,6 @@ namespace Cliver.fril.jp
         }
 
         const string Url = "https://fril.jp/sell";
-
-        public static void Open()
-        {
-            if (bf == null)
-                bf = new BrowserForm();
-            bf.Show();
-            bf.Activate();
-        }
-        static BrowserForm bf = null;
 
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {

@@ -41,7 +41,9 @@ namespace Cliver.fril.jp
 
         private void scheduleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BrowserForm.Open();
+            BrowserForm bf = new BrowserForm();
+            var h = bf.Handle;
+            bf.ShowDialog();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
