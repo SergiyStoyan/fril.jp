@@ -53,20 +53,25 @@ namespace Cliver.fril.jp
 
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
-            if (browser.Url == null || !browser.Url.AbsoluteUri.Contains(Url))
-                return;
-            switch (browser.ReadyState)
+            try
             {
-                case WebBrowserReadyState.Interactive:
-                    //HtmlElement s = browser.Document.CreateElement("script");
-                    //s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
-                    //browser.Document.Body.AppendChild(s);
-                    //add_buttons();
-                    break;
-                case WebBrowserReadyState.Complete:
-                    add_buttons();
-                    break;
+                if (browser.Url == null || !browser.Url.AbsoluteUri.Contains(Url))
+                    return;
+                switch (browser.ReadyState)
+                {
+                    case WebBrowserReadyState.Interactive:
+                        //HtmlElement s = browser.Document.CreateElement("script");
+                        //s.SetAttribute("src", "https://code.jquery.com/jquery-2.2.0.min.js");
+                        //browser.Document.Body.AppendChild(s);
+                        //add_buttons();
+                        break;
+                    case WebBrowserReadyState.Complete:
+                        add_buttons();
+                        break;
+                }
             }
+            catch//this callback crashes if the form is closed
+            { }
         }
 
         private void Browser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
