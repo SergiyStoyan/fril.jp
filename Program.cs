@@ -49,7 +49,7 @@ namespace Cliver.fril.jp
                 Cliver.Config.Initialize(new string[] { "Products", "Schedules" });
                 Cliver.Config.Reload();
 
-                InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2017, 4, 11);
+                //InternetDateTime.CHECK_TEST_PERIOD_VALIDITY(2017, 4, 11);
 
                 Service.Running = true;
 

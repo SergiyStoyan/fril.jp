@@ -42,21 +42,7 @@ namespace Cliver.fril.jp
                     //if (schedule_prices_t == null || !schedule_prices_t.IsAlive)
                     //    schedule_prices_t = Cliver.ThreadRoutines.StartTry(schedule_prices);
                     if (set_prices_t == null || !set_prices_t.IsAlive)
-                    {
-                        Thread t = new Thread(() =>
-                        {
-                            bf = new Browser2Form();
-                            Application.Run();
-                        });
-                        t.SetApartmentState(ApartmentState.STA);
-                        t.Start();
-                        SleepRoutines.WaitForObject(() =>
-                        {
-                            return bf;
-                        }, 3000);
-
                         set_prices_t = Cliver.ThreadRoutines.StartTry(set_prices);
-                    }
                 }
                 else
                 {
@@ -156,7 +142,7 @@ namespace Cliver.fril.jp
                             }
                             break;
                         case SiteProduct.PRODUCT_ABSENT:
-                            Log.Main.Warning("Product " + lp.ProductId + " is absent on site.");
+                            Log.Main.Warning("Product " + lp.ProductId + " is absent on site. Removing it from the schedule.");
                             lock (Settings.Products.Ids2Product)
                             {
                                 Settings.Products.Ids2Product.Remove(lp.ProductId);
@@ -196,13 +182,13 @@ namespace Cliver.fril.jp
 
         static SiteProduct set_price(uint price, string pid)
         {
-            return (SiteProduct)bf.Invoke(() =>
+            return (SiteProduct)Browser2Form.Browser.Invoke(() =>
             {
                 string url = "https://fril.jp/item/" + pid + "/edit";
-                bf.Browser.Navigate(url);
+                Browser2Form.Browser.Navigate(url);
                 if (!SleepRoutines.WaitForCondition(() =>
                 {
-                    return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, pid, RegexOptions.IgnoreCase);
+                    return Browser2Form.Browser.Url != null && Regex.IsMatch(Browser2Form.Browser.Url.AbsoluteUri, pid, RegexOptions.IgnoreCase);
                 }, 30000))
                 {
                     Log.Main.Error("Could not Navigate");
@@ -212,7 +198,7 @@ namespace Cliver.fril.jp
                 HtmlElement he = get_he("sell_price");
                 if (he == null)
                 {
-                    if (bf.Browser.ReadyState == WebBrowserReadyState.Complete)
+                    if (Browser2Form.Browser.ReadyState == WebBrowserReadyState.Complete)
                         return SiteProduct.PRODUCT_ABSENT;
                     return SiteProduct.ERROR;
                 }
@@ -227,7 +213,7 @@ namespace Cliver.fril.jp
                 he.InvokeMember("click");
                 if (!SleepRoutines.WaitForCondition(() =>
                 {
-                    var e = bf.Browser.Document.GetElementById("confirm-content");
+                    var e = Browser2Form.Browser.Document.GetElementById("confirm-content");
                     if (e == null)
                         return false;
                     if (Regex.IsMatch(e.Style, @"display:\s*none", RegexOptions.IgnoreCase))
@@ -256,7 +242,7 @@ namespace Cliver.fril.jp
                 he.InvokeMember("click");
                 if (!SleepRoutines.WaitForCondition(() =>
                 {
-                    return bf.Browser.Url != null && Regex.IsMatch(bf.Browser.Url.AbsoluteUri, @"fril\.jp/sell", RegexOptions.IgnoreCase);
+                    return Browser2Form.Browser.Url != null && Regex.IsMatch(Browser2Form.Browser.Url.AbsoluteUri, @"fril\.jp/sell", RegexOptions.IgnoreCase);
                 }, 30000))
                 {
                     Log.Main.Error("Could not save price");
@@ -266,15 +252,14 @@ namespace Cliver.fril.jp
                 return SiteProduct.SYNCHRONIZED;
             });
         }
-        static Browser2Form bf = null;
 
         static HtmlElement get_he(string id)
         {
             HtmlElement he = (HtmlElement)SleepRoutines.WaitForObject(() =>
             {
-                if (bf.Browser.Document == null)
+                if (Browser2Form.Browser.Document == null)
                     return null;
-                return bf.Browser.Document.GetElementById(id);
+                return Browser2Form.Browser.Document.GetElementById(id);
             }, 30000);
             if (he == null)
                 Log.Main.Error("Could not get HtmlElement: " + id);

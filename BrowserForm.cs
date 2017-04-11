@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Cliver;
 
 //LOGIN:
-//mrsweeves @i.softbank.jp
+//mrsweeves@i.softbank.jp
 //Crusaders-1
 
 
@@ -17,7 +17,7 @@ namespace Cliver.fril.jp
 {
     public partial class BrowserForm : Form//BaseForm//
     {
-        public BrowserForm()
+        BrowserForm()
         {
             InitializeComponent();
 
@@ -50,6 +50,15 @@ namespace Cliver.fril.jp
         }
 
         const string Url = "https://fril.jp/sell";
+
+        public static void Open()
+        {
+            if (bf == null)
+                bf = new BrowserForm();
+            bf.Show();
+            bf.Activate();
+        }
+        static BrowserForm bf = null;
 
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {

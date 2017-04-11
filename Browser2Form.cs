@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Cliver;
+using System.Threading;
 
 namespace Cliver.fril.jp
 {
@@ -34,11 +35,11 @@ namespace Cliver.fril.jp
             //        if (!Cliver.Win32.InternetSetCookie(c.path, c.name, c.value))
             //            throw new Exception("Could not set cookie");
 
-            Browser.ScriptErrorsSuppressed = true;
-            Browser.ObjectForScripting = this;
-            Browser.DocumentCompleted += Browser_DocumentCompleted;
-            Browser.Navigated += Browser_Navigated;
-            Browser.ProgressChanged += Browser_ProgressChanged;
+            browser.ScriptErrorsSuppressed = true;
+            browser.ObjectForScripting = this;
+            browser.DocumentCompleted += Browser_DocumentCompleted;
+            browser.Navigated += Browser_Navigated;
+            browser.ProgressChanged += Browser_ProgressChanged;
 
             if (!IsHandleCreated)
                 CreateHandle();
@@ -47,11 +48,27 @@ namespace Cliver.fril.jp
             //Show();
         }
 
+        public static System.Windows.Forms.WebBrowser Browser
+        {
+            get
+            {
+                if (bf == null)
+                {
+                    ControlRoutines.InvokeFromUiThread(() =>
+                    {
+                        bf = new Browser2Form();
+                    });
+                }
+                return bf.browser;
+            }
+        }
+        static Browser2Form bf = null;
+
         private void Browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
-            ManagedWebBrowserReadyState = Browser.ReadyState;
+            ManagedWebBrowserReadyState = browser.ReadyState;
         }
-       public WebBrowserReadyState ManagedWebBrowserReadyState = WebBrowserReadyState.Uninitialized;
+        public WebBrowserReadyState ManagedWebBrowserReadyState = WebBrowserReadyState.Uninitialized;
 
         private void Browser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
